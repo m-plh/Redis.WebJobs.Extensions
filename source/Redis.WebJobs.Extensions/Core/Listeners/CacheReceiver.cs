@@ -23,7 +23,7 @@ namespace Redis.WebJobs.Extensions.Listeners
 
         public async Task OnExecuteAsync(Func<string, string, Task> processMessageAsync)
         {
-            var connection = RedisClient.CreateConnectionFromConnectionString(_config.ConnectionString);
+            var connection = await RedisClient.CreateConnectionFromConnectionStringAsync(_config.ConnectionString);
             var db = connection.GetDatabase();
 
             string prevValue = null;

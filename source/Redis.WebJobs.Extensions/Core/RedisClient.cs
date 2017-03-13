@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using System.Threading.Tasks;
+using StackExchange.Redis;
 
 namespace Redis.WebJobs.Extensions
 {
@@ -10,9 +11,20 @@ namespace Redis.WebJobs.Extensions
             return redisConnection.GetDatabase();
         }
 
+        public static async Task<IDatabase> CreateDbFromConnectionStringAsync(string connectionString)
+        {
+            ConnectionMultiplexer redisConnection = await ConnectionMultiplexer.ConnectAsync(connectionString);
+            return redisConnection.GetDatabase();
+        }
+
         public static ConnectionMultiplexer CreateConnectionFromConnectionString(string connectionString)
         {
             return ConnectionMultiplexer.Connect(connectionString);
+        }
+
+        public static async Task<ConnectionMultiplexer> CreateConnectionFromConnectionStringAsync(string connectionString)
+        {
+            return await ConnectionMultiplexer.ConnectAsync(connectionString);
         }
     }
 }
