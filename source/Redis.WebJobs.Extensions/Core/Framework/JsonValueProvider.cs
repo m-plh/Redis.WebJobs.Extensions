@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Newtonsoft.Json;
 
@@ -46,7 +45,10 @@ namespace Redis.WebJobs.Extensions.Framework
             }
         }
 
-        public Type Type => _valueType;
+        public Type Type
+        {
+            get { return _valueType; }
+        }
 
         public object GetValue()
         {
@@ -68,11 +70,6 @@ namespace Redis.WebJobs.Extensions.Framework
             {
                 return null;
             }
-        }
-
-        public Task<object> GetValueAsync()
-        {
-            return Task.FromResult(GetValue());
         }
     }
 }

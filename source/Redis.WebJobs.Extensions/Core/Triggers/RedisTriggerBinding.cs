@@ -58,16 +58,16 @@ namespace Redis.WebJobs.Extensions.Triggers
             get { return _mode; }
         }
 
-        public async Task<ITriggerData> BindAsync(object value, ValueBindingContext context)
+        public Task<ITriggerData> BindAsync(object value, ValueBindingContext context)
         {
             IValueProvider provider = new JsonValueProvider(value, _parameter.ParameterType);
 
             IReadOnlyDictionary<string, object> bindingData = (_bindingDataProvider != null)
-                ? _bindingDataProvider.GetBindingData( await provider.GetValueAsync()) : null;
+                ? _bindingDataProvider.GetBindingData(provider.GetValue()) : null;
 
             var result = new TriggerData(provider, bindingData);
 
-            return result;
+            return Task.FromResult<ITriggerData>(result);
         }
         
         public Task<IListener> CreateListenerAsync(ListenerFactoryContext context)

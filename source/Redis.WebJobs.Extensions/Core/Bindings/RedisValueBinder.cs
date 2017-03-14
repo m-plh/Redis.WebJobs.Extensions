@@ -17,7 +17,22 @@ namespace Redis.WebJobs.Extensions.Bindings
 
         public override object GetValue()
         {
-            return GetValueAsync().Result;
+            string value = _entity.GetAsync().Result;
+
+            if (value == null)
+            {
+                return default(TInput);
+            }
+
+            TInput contents;
+            if (TryJsonConvert(value, out contents))
+            {
+                return contents;
+            }
+            else
+            {
+                return value;
+            }
         }
 
         public override string ToInvokeString()
@@ -49,25 +64,6 @@ namespace Redis.WebJobs.Extensions.Bindings
                 return _entity.SetAsync(message);
             }
         }
-
-        public override async Task<object> GetValueAsync()
-        {
-            string value = await _entity.GetAsync();
-
-            if (value == null)
-            {
-                return default(TInput);
-            }
-
-            TInput contents;
-            if (TryJsonConvert(value, out contents))
-            {
-                return contents;
-            }
-            else
-            {
-                return value;
-            }
-        }
+        
     }
 }
