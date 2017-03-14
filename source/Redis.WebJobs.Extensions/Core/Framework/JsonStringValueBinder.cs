@@ -54,5 +54,8 @@ namespace Redis.WebJobs.Extensions.Framework
                 return false;
             }
         }
+
+        public abstract Task<object> GetValueAsync();
+
     }
 }
